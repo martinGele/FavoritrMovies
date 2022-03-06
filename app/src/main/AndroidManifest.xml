@@ -4,14 +4,14 @@
 
     <application
         android:allowBackup="true"
-        android:name="com.martin.favoritemovies.MoviesApplication"
+        android:name=".MoviesApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FavoritrMovies">
+        android:theme="@style/Theme.Movies">
         <activity
-            android:name="com.martin.favoritemovies.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
