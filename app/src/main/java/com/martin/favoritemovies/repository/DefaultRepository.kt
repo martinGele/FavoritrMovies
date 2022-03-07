@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface DefaultRepository {
 
-    fun getTopMovies(refreshOnInit: Boolean): Flow<PagingData<TopRatedMovies.Result>>
+    fun getTopMovies(): Flow<PagingData<TopRatedMovies.Result>>
 }

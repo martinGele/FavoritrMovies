@@ -12,5 +12,5 @@ class MainViewModel
 @Inject constructor(
     private val repository: DefaultRepository) : ViewModel() {
 
-    fun getTopMovies(refreshOnInit: Boolean) = repository.getTopMovies(refreshOnInit).cachedIn(viewModelScope)
+    fun getTopMovies() = repository.getTopMovies().cachedIn(viewModelScope)
 }

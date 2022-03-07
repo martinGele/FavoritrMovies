@@ -5,6 +5,8 @@ import androidx.paging.PagingState
 import com.martin.favoritemovies.BuildConfig
 import com.martin.favoritemovies.api.MoviesApi
 import com.martin.favoritemovies.api.models.TopRatedMovies
+import retrofit2.HttpException
+import java.io.IOException
 
 class MoviesPagingSource(private val moviesApi: MoviesApi) : PagingSource<Int, TopRatedMovies.Result>() {
 
@@ -20,13 +22,18 @@ class MoviesPagingSource(private val moviesApi: MoviesApi) : PagingSource<Int, T
                 prevKey = prevKey,
                 nextKey = currentLoadingPageKey.plus(1)
             )
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            LoadResult.Error(e)
+        } catch (e: HttpException) {
             LoadResult.Error(e)
         }
     }
 
     override fun getRefreshKey(state: PagingState<Int, TopRatedMovies.Result>): Int? {
-        TODO("Not yet implemented")
+        return state.anchorPosition?.let {
+            state.closestPageToPosition(it)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
+        }
     }
 
 

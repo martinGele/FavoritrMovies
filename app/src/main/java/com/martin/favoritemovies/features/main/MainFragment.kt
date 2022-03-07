@@ -10,7 +10,6 @@ import com.martin.favoritemovies.R
 import com.martin.favoritemovies.databinding.MainFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -29,18 +28,25 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         moviesPagingAdapter = MoviesListPagingAdapter(
             onItemClick = {
 
+
             }
         )
-        lifecycleScope.launch {
-            viewModel.getTopMovies(true).collect {
+        lifecycleScope.launchWhenCreated {
+            viewModel.getTopMovies().collect {
                 moviesPagingAdapter.submitData(it)
             }
         }
         currentBinding.apply {
             rvMovies.apply {
                 layoutManager = LinearLayoutManager(activity)
-                adapter = moviesPagingAdapter
+                adapter = moviesPagingAdapter.withLoadStateFooter(
+                    MoviesLoadStateAdapter(moviesPagingAdapter::retry))
             }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            moviesPagingAdapter.loadStateFlow
+
         }
     }
 }

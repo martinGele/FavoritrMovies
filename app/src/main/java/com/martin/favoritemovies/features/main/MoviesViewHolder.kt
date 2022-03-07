@@ -11,6 +11,13 @@ class MoviesViewHolder(private val binding: ItemMoviesBinding, private val onIte
 
         binding.apply {
             tvTitle.text = currentItem.overview
+
+            root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick(position)
+                }
+            }
         }
     }
 }

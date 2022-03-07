@@ -14,7 +14,7 @@ class MoviesRepository @Inject constructor(
 ) : DefaultRepository {
 
 
-    override fun getTopMovies(refreshOnInit: Boolean
+    override fun getTopMovies(
     ): Flow<PagingData<TopRatedMovies.Result>> {
         return Pager(PagingConfig(pageSize = 20)) {
             MoviesPagingSource(moviesApi)
