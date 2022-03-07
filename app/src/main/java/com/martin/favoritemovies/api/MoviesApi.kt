@@ -12,8 +12,8 @@ interface MoviesApi {
 
     @GET("/3/movie/top_rated")
     suspend fun getTopMovies(
-        @Query("api_key") api_key: String,
-        @Query("language") page: String,
-        @Query("page") pageSize: Int
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
     ): TopRatedMovies
 }

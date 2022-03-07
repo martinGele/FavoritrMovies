@@ -1,7 +1,7 @@
 package com.martin.favoritemovies
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.martin.favoritemovies.features.main.MainFragment
 import dagger.hilt.android.AndroidEntryPoint
 

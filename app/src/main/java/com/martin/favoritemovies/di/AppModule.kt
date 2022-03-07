@@ -1,10 +1,6 @@
 package com.martin.favoritemovies.di
 
-import android.app.Application
-import androidx.room.Room
 import com.martin.favoritemovies.api.MoviesApi
-import com.martin.favoritemovies.data.MoviesDao
-import com.martin.favoritemovies.data.MoviesDatabase
 import com.martin.favoritemovies.repository.DefaultRepository
 import com.martin.favoritemovies.repository.MoviesRepository
 import dagger.Module
@@ -33,26 +29,11 @@ object AppModule {
     fun provideMoviesApi(retrofit: Retrofit): MoviesApi =
         retrofit.create(MoviesApi::class.java)
 
-    @Provides
-    @Singleton
-    fun provideDatabase(app: Application): MoviesDatabase =
-        Room.databaseBuilder(app, MoviesDatabase::class.java, "movies_database")
-            .fallbackToDestructiveMigration()
-            .build()
-
 
     @Singleton
     @Provides
     fun provideDefaultRepository(
-        dao: MoviesDao,
-        api: MoviesApi,
-        moviesDb: MoviesDatabase
-    ) = MoviesRepository(api, moviesDb, dao) as DefaultRepository
-
-    @Singleton
-    @Provides
-    fun provideMoviesDao(
-        database: MoviesDatabase
-    ) = database.moviesDao()
+        api: MoviesApi
+    ) = MoviesRepository(api) as DefaultRepository
 
 }

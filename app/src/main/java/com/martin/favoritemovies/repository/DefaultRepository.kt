@@ -1,10 +1,10 @@
 package com.martin.favoritemovies.repository
 
-import com.martin.favoritemovies.data.models.TopRatedMoviesTable
-import com.martin.favoritemovies.util.Resource
+import androidx.paging.PagingData
+import com.martin.favoritemovies.api.models.TopRatedMovies
 import kotlinx.coroutines.flow.Flow
 
 interface DefaultRepository {
 
-    fun getTopMovies(): Flow<Resource<TopRatedMoviesTable>>
+    fun getTopMovies(refreshOnInit: Boolean): Flow<PagingData<TopRatedMovies.Result>>
 }
