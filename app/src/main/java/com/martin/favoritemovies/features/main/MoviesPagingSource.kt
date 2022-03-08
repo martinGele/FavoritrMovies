@@ -12,11 +12,14 @@ class MoviesPagingSource(private val moviesApi: MoviesApi) : PagingSource<Int, T
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TopRatedMovies.Result> {
         return try {
+            // get the current key
             val currentLoadingPageKey = params.key ?: 1
+            //start the http call with page 1
             val response = moviesApi.getTopMovies(apiKey = BuildConfig.MOVIES_ACCESS_KEY, language = "en", page = currentLoadingPageKey)
-
+            //get the previous key and set it -1 from the current
             val prevKey = if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1
 
+            //every end of page add plus one to the current loading page key
             LoadResult.Page(
                 data = response.results,
                 prevKey = prevKey,

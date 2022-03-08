@@ -19,6 +19,7 @@ class MoviesLoadStateAdapter(private val retry: () -> Unit) :
     }
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
+        //pass the load state to be in the view holder
         holder.bind(loadState)
     }
 
@@ -26,11 +27,15 @@ class MoviesLoadStateAdapter(private val retry: () -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
+            //on retry button retry the failed load state
             binding.bnRetry.setOnClickListener {
                 retry()
             }
         }
 
+        /**
+         * set the views to be run by loading states
+         */
         fun bind(loadState: LoadState) {
             binding.apply {
                 pbLoadState.isVisible = loadState is LoadState.Loading
