@@ -15,9 +15,9 @@ fun ImageView.loadImage(imageUrl: String?) {
         .into(this)
 }
 
-//fun ImageView.loadImageNoCorners(imageUrl: String?) {
-//    Glide.with(this)
-//        .load(imageUrl)
-//        .
-//        .into(this)
-//}
+fun ImageView.loadImageNoCorners(imageUrl: String?) {
+    Glide.with(this)
+        .load(imageUrl)
+        .centerCrop()
+        .into(this)
+}

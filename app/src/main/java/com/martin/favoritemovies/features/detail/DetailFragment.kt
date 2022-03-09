@@ -11,7 +11,7 @@ import com.martin.favoritemovies.R
 import com.martin.favoritemovies.api.MoviesApi
 import com.martin.favoritemovies.databinding.DetailFragmentBinding
 import com.martin.favoritemovies.util.Status
-import com.martin.favoritemovies.util.loadImage
+import com.martin.favoritemovies.util.loadImageNoCorners
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -41,7 +41,16 @@ class DetailFragment : Fragment(R.layout.detail_fragment) {
 
                 when (movieDetail.status) {
                     Status.SUCCESS -> {
-                        currentBinding.ivDetail.loadImage("${MoviesApi.IMAGE_SOURCE}${movieDetail.data?.poster_path}")
+                        //if the http call is 200 fill the layout
+                        currentBinding.apply {
+                            ivDetail.loadImageNoCorners("${MoviesApi.IMAGE_SOURCE}${movieDetail.data?.backdrop_path}")
+                            tvTitle.text = movieDetail.data?.title
+                            tvDescription.text = movieDetail.data?.overview
+
+                            val originalLanguage = "Original language: ${movieDetail.data?.original_language}"
+                            tvLanguage.text = originalLanguage
+
+                        }
                     }
                     Status.ERROR -> {
                         currentBinding.tvErrorDetail.text = movieDetail.message
