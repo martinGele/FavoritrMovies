@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.martin.favoritemovies.R
@@ -34,9 +35,11 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
         //on item click from the view holder pass the pojo object
         moviesPagingAdapter = MoviesListPagingAdapter(
-            onItemClick = {
-
-
+            onItemClick = { movie ->
+                //navigate to the other fragment and pass the id of the movie
+                val action =
+                    MainFragmentDirections.actionMainFragmentToDetailFragment(movie.id)
+                view.findNavController().navigate(action)
             }
         )
 
@@ -60,7 +63,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             lifecycleScope.launchWhenStarted {
                 moviesPagingAdapter.loadStateFlow
                     .collect { loadStates ->
-
+                        //with load states control what is showed on the screen
                         pbMain.isVisible = loadStates.refresh is LoadState.Loading
                         bnRetryMain.isVisible = loadStates.refresh is LoadState.Error
                         tvErrorMain.isVisible = loadStates.refresh is LoadState.Error

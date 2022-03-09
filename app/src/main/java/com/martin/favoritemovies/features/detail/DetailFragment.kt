@@ -2,18 +2,56 @@ package com.martin.favoritemovies.features.detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.martin.favoritemovies.R
+import com.martin.favoritemovies.api.MoviesApi
+import com.martin.favoritemovies.databinding.DetailFragmentBinding
+import com.martin.favoritemovies.util.Status
+import com.martin.favoritemovies.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class DetailFragment : Fragment(R.layout.detail_fragment) {
 
-
+    //initiate the view model
     private val viewModel: DetailViewModel by viewModels()
+
+    //take the safe args from the navigation
+    private val args: DetailFragmentArgs by navArgs()
+
+    //get the DetailFragmentBinding
+    private lateinit var currentBinding: DetailFragmentBinding
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentBinding = DetailFragmentBinding.bind(view)
+
+        val movieId = args.movieId
+        lifecycleScope.launchWhenCreated {
+            viewModel.getTopMovies(movieId).collectLatest { movieDetail ->
+
+                //when the status is in loading show the spinner
+                currentBinding.pbDetailMovie.isVisible = movieDetail.status == Status.LOADING
+
+                when (movieDetail.status) {
+                    Status.SUCCESS -> {
+                        currentBinding.ivDetail.loadImage("${MoviesApi.IMAGE_SOURCE}${movieDetail.data?.poster_path}")
+                    }
+                    Status.ERROR -> {
+                        currentBinding.tvErrorDetail.text = movieDetail.message
+
+                    }
+                }
+            }
+
+
+        }
     }
+
 }
